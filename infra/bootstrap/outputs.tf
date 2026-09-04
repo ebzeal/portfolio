@@ -23,11 +23,6 @@ output "state_bucket_arn" {
   value       = aws_s3_bucket.state.arn
 }
 
-output "lock_table_name" {
-  description = "DynamoDB table name used for state locking"
-  value       = aws_dynamodb_table.lock.name
-}
-
 output "github_deploy_role_arn" {
   description = "ARN of the GitHub Actions deployment role (empty if disabled)"
   value       = var.enable_github_oidc ? aws_iam_role.github_deploy[0].arn : ""

@@ -22,12 +22,6 @@ variable "state_bucket_name" {
   default     = "ebzeal-terraform-state"
 }
 
-variable "lock_table_name" {
-  description = "DynamoDB table name used for Terraform state locking"
-  type        = string
-  default     = "ebzeal-terraform-lock"
-}
-
 variable "enable_github_oidc" {
   description = "Create a GitHub Actions OIDC provider and deployment role"
   type        = bool

@@ -11,11 +11,11 @@ terraform {
   backend "s3" {
     # These values MUST match the bootstrap stage outputs (bootstrap defaults).
     # Override with `terraform init -backend-config=...` if you customized them.
-    bucket         = "ebzeal-terraform-state"
-    key            = "application/production/terraform.tfstate"
-    region         = "ca-central-1"
-    dynamodb_table = "ebzeal-terraform-lock"
-    encrypt        = true
+    bucket       = "ebzeal-terraform-state"
+    key          = "application/production/terraform.tfstate"
+    region       = "ca-central-1"
+    encrypt      = true
+    use_lockfile = true
   }
 }
 

@@ -10,8 +10,8 @@ terraform {
 
   # The bootstrap stage intentionally uses LOCAL state. It has to run before any
   # S3-backed state can exist (chicken-and-egg). After `terraform apply`, the S3
-  # bucket and DynamoDB lock table it creates host the remote state for the
-  # application stage (see application/main.tf).
+  # bucket it creates hosts the remote state for the application stage (which
+  # locks via the S3 `use_lockfile` feature).
 }
 
 provider "aws" {
@@ -56,7 +56,7 @@ resource "aws_ecr_lifecycle_policy" "app" {
 }
 
 # ---------------------------------------------------------------------------
-# Terraform state bucket + DynamoDB lock table.
+# Terraform state bucket (state locking handled via S3 use_lockfile).
 # ---------------------------------------------------------------------------
 resource "aws_s3_bucket" "state" {
   bucket = var.state_bucket_name
@@ -85,19 +85,6 @@ resource "aws_s3_bucket_public_access_block" "state" {
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
-}
-
-resource "aws_dynamodb_table" "lock" {
-  name         = var.lock_table_name
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "LockID"
-
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
-
-  tags = var.tags
 }
 
 # ---------------------------------------------------------------------------
