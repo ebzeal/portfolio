@@ -1,0 +1,102 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env
+.env.*
+!.env.example
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+
+#fastapi
+# Python bytecode (compiled files)
+/backend/__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+/backend/.venv/
+/backend/venv/
+/backend/ENV/
+/backend/env/
+
+# Environment variables and secrets (NEVER commit these)
+/backend/.env
+/backend/.env.*
+!.backend/.env.example
+/backend/secrets.toml
+
+# Databases (SQLite logs/instances standard in small FastAPI apps)
+/backend/*.sqlite3
+/backend/*.db
+
+# Package managers & Locks
+/backend/.pdm.toml
+/backend/.python-version
+/backend/__pypackages__/
+
+# Testing and Coverage
+/backend/.pytest_cache/
+/backend/.coverage
+/backend/htmlcov/
+
+# Linters, Type Checkers, and Formatters
+/backend/.mypy_cache/
+/backend/.ruff_cache/
+/backend/.black
+/backend/.pyre/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+/backend/lambda-package/
+/memory/*
+
+# build artifacts
+/out.zip
+/backend/lambda-deployment.zip
+/backend/*.zip
+
+# local AI agent config
+/.qodo/
+
+/docs/*

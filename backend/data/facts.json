@@ -1,0 +1,35 @@
+{
+  "full_name": "Olusola Ajayi",
+  "name": "Sola",
+  "current_role": "Software Engineer",
+  "location": "Sault Ste. Marie, Ontario, Canada",
+  "email": "ebenezerajayi@gmail.com",
+  "linkedin": "https://www.linkedin.com/in/ebzeal/",
+  "website": "https://ebzeal.online/",
+  "specialties": [
+    "TypeScript",
+    "Python",
+    "AI/ML",
+    "AWS",
+    "React",
+    "Node.js",
+    "FastAPI",
+    "Docker",
+    "Kubernetes",
+    "Terraform",
+    "Ansible",
+    "CI/CD",
+    "Event-driven architectures",
+    "Grafana",
+    "Github Actions"
+  ],
+  "years_experience": 9,
+  "education": [
+    {
+      "degree": "BSc. Computer Science",
+      "institution": "Algoma University",
+      "graduation_year": 2025,
+      "status": "completed"
+    }
+  ]
+}
