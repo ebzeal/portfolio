@@ -18,7 +18,7 @@ use_s3                      = true
 chat_memory_expiration_days = 365
 
 # Custom domain (leave both empty to serve from the CloudFront hostname).
-domain_name    = ""
+domain_name    = "ebzeal.online"
 hosted_zone_id = ""
 
 # CloudFront
@@ -27,7 +27,7 @@ cloudfront_price_class = "PriceClass_100"
 # Notifications + budget
 alert_email              = ""
 enable_budget            = false
-budget_amount            = "100"
+budget_amount            = "30"
 budget_time_period_start = "2026-01-01_00:00"
 
 # Secret: do NOT commit the real value. Provide via

@@ -116,7 +116,7 @@ variable "enable_budget" {
 variable "budget_amount" {
   description = "Monthly budget limit in USD"
   type        = string
-  default     = "100"
+  default     = "30"
 }
 
 variable "budget_time_period_start" {

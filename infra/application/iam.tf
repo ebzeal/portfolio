@@ -19,6 +19,14 @@ resource "aws_iam_role" "lambda" {
 }
 
 data "aws_iam_policy_document" "lambda_memory" {
+  # ListBucket is required so a missing key returns NoSuchKey (404) instead of
+  # AccessDenied (403); the app relies on NoSuchKey to start a fresh session.
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:ListBucket"]
+    resources = [aws_s3_bucket.memory.arn]
+  }
+
   statement {
     effect = "Allow"
     actions = [
