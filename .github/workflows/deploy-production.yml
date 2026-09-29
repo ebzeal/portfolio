@@ -1,0 +1,85 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+jobs:
+  frontend:
+    name: Build & deploy frontend (S3 + CloudFront)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static site
+        run: npm run build
+        env:
+          NEXT_PUBLIC_CHAT_API_URL: ${{ vars.NEXT_PUBLIC_CHAT_API_URL }}
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          role-session-name: github-actions-${{ github.run_id }}
+          aws-region: ca-central-1
+
+      - name: Sync site to S3
+        run: aws s3 sync out/ s3://${{ vars.FRONTEND_BUCKET }}/ --delete
+
+      - name: Invalidate CloudFront cache
+        run: aws cloudfront create-invalidation --distribution-id ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }} --paths '/*'
+
+  backend:
+    name: Build & deploy backend (ECR + Lambda)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          role-session-name: github-actions-${{ github.run_id }}
+          aws-region: ca-central-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          platforms: linux/amd64
+          provenance: false
+          push: true
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/ebzeal-digital-twin:latest
+            ${{ steps.login-ecr.outputs.registry }}/ebzeal-digital-twin:${{ github.sha }}
+
+      - name: Update Lambda function
+        run: |
+          aws lambda update-function-code \
+            --function-name ebzeal-digital-twin \
+            --image-uri ${{ steps.login-ecr.outputs.registry }}/ebzeal-digital-twin:latest
