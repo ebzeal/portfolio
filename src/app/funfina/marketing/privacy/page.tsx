@@ -162,7 +162,7 @@ export default function PrivacyPage() {
   );
 }
 
-const LAST_UPDATED = "[DATE]";
+const LAST_UPDATED = "29th September 2026";
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
