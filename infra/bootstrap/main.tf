@@ -90,6 +90,16 @@ resource "aws_s3_bucket_public_access_block" "state" {
 # ---------------------------------------------------------------------------
 # Optional: GitHub Actions OIDC provider + deployment role.
 # ---------------------------------------------------------------------------
+
+# GitHub appends `@<numeric-id>` to the org/repo in the `sub` claim whenever a
+# name has been reused (e.g. after a rename or transfer), e.g.
+#   repo:ebzeal@25286404/portfolio@1355388847:ref:refs/heads/main
+# Build the subject prefix to match whichever form GitHub emits.
+locals {
+  github_org_subject  = var.github_org_id != "" ? "${var.github_org}@${var.github_org_id}" : var.github_org
+  github_repo_subject = var.github_repo_id != "" ? "${var.github_repo}@${var.github_repo_id}" : var.github_repo
+}
+
 resource "aws_iam_openid_connect_provider" "github" {
   count = var.enable_github_oidc ? 1 : 0
 
@@ -116,7 +126,7 @@ resource "aws_iam_role" "github_deploy" {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
           }
           StringLike = {
-            "token.actions.githubusercontent.com:sub" = "repo:${var.github_org}/${var.github_repo}:*"
+            "token.actions.githubusercontent.com:sub" = "repo:${local.github_org_subject}/${local.github_repo_subject}:*"
           }
         }
       }

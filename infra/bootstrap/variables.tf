@@ -40,6 +40,18 @@ variable "github_repo" {
   default     = ""
 }
 
+variable "github_org_id" {
+  description = "GitHub organization/user numeric ID, appended to the org name in the OIDC subject when GitHub disambiguates a reused name"
+  type        = string
+  default     = ""
+}
+
+variable "github_repo_id" {
+  description = "GitHub repository numeric ID, appended to the repo name in the OIDC subject when GitHub disambiguates a reused name"
+  type        = string
+  default     = ""
+}
+
 variable "tags" {
   description = "Common tags applied to all resources"
   type        = map(string)

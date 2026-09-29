@@ -10,6 +10,11 @@ state_bucket_name   = "ebzeal-terraform-state"
 enable_github_oidc = true
 github_org         = "ebzeal"
 github_repo        = "portfolio"
+# Numeric IDs appended by GitHub to the OIDC `sub` claim because the names were
+# reused (see the "Debug OIDC claims" workflow step). Keep these in sync if the
+# repo is ever renamed/transferred again.
+github_org_id  = "25286404"
+github_repo_id = "1355388847"
 
 tags = {
   Environment = "bootstrap"
